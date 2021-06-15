@@ -7,9 +7,9 @@ public class Tile : GameBoard
     public List<Tile> AroundTile;
     public List<Animals> Animal;
 
-    private void OnMouseDown()      //해당 동물을 클릭했을 때 
-    {
 
+    public void React()
+    {
         if (true == active)
         {
             //base.OnMouseDown();
@@ -19,15 +19,20 @@ public class Tile : GameBoard
 
                 if (CheckRemaining() == true)        //나눌 수 있는 경우
                 {
-                    AnimalAnimation();      //애니메이션 진행
+                    AnimalMoving();      //애니메이션 진행
                 }
                 else
                 {
-                    InputLock = false;
+                    AnimalReact();
                 }
             }
         }
-        //Debug.Log(TileName);
+        InputLock = false;
+    }
+
+    private void OnMouseDown()      //해당 칸을 클릭했을 때 
+    {
+        React();
     }
 
     private bool CheckRemaining()       //해당 타일의 주변 active 타일과 동물의 수 나머지 계산
@@ -36,7 +41,9 @@ public class Tile : GameBoard
         for(int i=0; i< AroundTile.Count; ++i)
         {
             if (true == AroundTile[i].active)
+            {
                 cnt += 1;
+            }
         }
         if (Animal.Count % cnt == 0)       // 나눌 수 있는 경우
         {   
@@ -48,25 +55,51 @@ public class Tile : GameBoard
         }
     }
 
-    private void AnimalAnimation()      //자신이 가지고 있던 동물들에 대해 각 애니메이션 호출
+    private Tile FindDestination(Tile next, int dir, int type)
+    {
+        if (type == (int)AnimalType.SHEEP)
+        {
+            Tile dest = next.AroundTile[dir];
+            if (true == dest.active)
+            {
+                return dest;
+            }
+        }
+        else if (type == (int)AnimalType.CHICKEN)
+        {
+            Tile dest = next.AroundTile[dir];
+            if (true == dest.active)
+            {
+                return FindDestination(dest, dir, type);
+            }
+            else
+            {
+                return next;
+            }
+        }
+        return this;
+    }
+
+    private void AnimalReact()
     {
         for (int i = Animal.Count - 1; i >= 0; --i)
         {
-            int targettile = i % AroundTile.Count;
-            Vector3 offsetz = new Vector3( 0, 0, 1);
+            Animal[i].Animation(this, Behavior.REACT);
+        }
+    }
 
-            //차후 애니메이션으로 수정
-            //
-            Animal[i].transform.position = AroundTile[targettile].transform.position;
-            Animal[i].transform.position -= offsetz;
+    private void AnimalMoving()      //자신이 가지고 있던 동물들에 대해 각 애니메이션 호출
+    {
 
+        for (int i = Animal.Count - 1; i >= 0; --i)
+        {
+            Tile des = FindDestination(this, (int)Animal[i].dir, (int)Animal[i].type);
 
-            AroundTile[targettile].Animal.Add(Animal[i]);
+            Animal[i].Animation(des, Behavior.MOVING);
+
+            des.Animal.Add(Animal[i]);
             Animal.RemoveAt(i);
         }
-
-        //동물들 이동, 애니메이션 처리 후
-        InputLock = false;
     }
 
 
@@ -74,7 +107,10 @@ public class Tile : GameBoard
     // Start is called before the first frame update
     void Start()
     {
-        
+        for (int i = Animal.Count - 1; i >= 0; --i)
+        {
+            Animal[i].belongtile = this;
+        }
     }
 
     // Update is called once per frame

@@ -11,41 +11,159 @@ public enum AnimalType
 
 public enum Direction
 {
-    UP = 100,
+    UP = 0,
     LEFT,
     RIGHT,
     DOWN
 }
 
+public enum Behavior
+{
+    SLEEP = 50,
+    MOVING,
+    REACT
+}
 
 public class Animals : MonoBehaviour
 {
-    protected AnimalType type;   //동물 타입 (양, 소, 닭)
+    public AnimalType type;   //동물 타입 (양, 소, 닭)
     public Direction dir;    //바라보는 방향(위, 좌, 우, 아래)
-    protected Vector2Int loc; //맵 상에서 위치할 좌표(0,0 ~ 5,5 형태)
+    public bool mov;
+    public int speed;
+    protected Vector3 loc;
+    public Tile belongtile;
 
     // 상속할 함수 정의
-    public virtual int Move()  //Animal에서 공통적으로 처리되는 부분 구현
+    private void OnMouseDown()      //해당 칸을 클릭했을 때 
     {
-        GameBoard gameboard = GetComponent<GameBoard>();        //맵 정보가 저장되어 있는 gameboard에 접근
-        int result = gameboard.CheckingMove(type, dir, loc);     //해당 방향으로 이동이 얼마나 가능한지 값 리턴
-        return result;
+        belongtile.React();
     }
 
-    protected virtual void Animation()
+    private void ChangeDirection()
     {
-        //동물 이동 시 애니메이션으로 진행
-
+        if (this.dir == Direction.UP)
+            this.dir = Direction.DOWN;
+        else if (this.dir == Direction.DOWN)
+            this.dir = Direction.UP;
+        else if (this.dir == Direction.LEFT)
+            this.dir = Direction.RIGHT;
+        else if (this.dir == Direction.RIGHT)
+            this.dir = Direction.LEFT;
     }
 
-    /*
-     //생각해보니까 동물을 클릭하는게 아니라 타일을 클릭해야 함, 일단 제외
-    private void OnMouseDown()      //해당 동물을 클릭했을 때 
+    private Vector3 Destination(Vector3 vtile)
     {
-        Debug.Log(type);
-        //Move();
+        float offset = 1.0f;
+        int rangemin = 5;
+        int rangemax = 25;
+
+        float randmain = Random.Range(rangemin, rangemax) * (float)0.01;
+        float randanother = Random.Range(-1, 2) * (float)0.1;
+        vtile.z -= offset;
+
+        if (this.dir == Direction.UP)
+        {
+            vtile.y -= randmain;
+            vtile.x += randanother;
+        }
+        else if (this.dir == Direction.DOWN)
+        {
+            vtile.y += randmain;
+            vtile.x += randanother;
+        }
+        else if (this.dir == Direction.LEFT)
+        {
+            vtile.x += randmain;
+            vtile.y += randanother;
+        }
+        else if (this.dir == Direction.RIGHT)
+        {
+            vtile.x -= randmain;
+            vtile.y += randanother;
+        }
+        
+        return vtile;
     }
-    */
+
+    public bool IsArrived()
+    {
+        if (this.dir == Direction.UP)
+        {
+            if (this.transform.position.y >= this.loc.y)
+                return true;
+        }
+        else if (this.dir == Direction.DOWN)
+        {
+            if (this.transform.position.y <= loc.y)
+                return true;
+        }
+        else if (this.dir == Direction.LEFT)
+        {
+            if (this.transform.position.x <= loc.x)
+                return true;
+        }
+        else if (this.dir == Direction.RIGHT)
+        {
+            if (this.transform.position.x >= loc.x)
+                return true;
+        }
+        return false;
+    }
+
+
+    public void Moving()
+    {
+        if (this.mov == true)
+        {
+            if (this.dir == Direction.UP)
+            {
+                Vector3 pos = new Vector3(0, this.speed * Time.deltaTime, 0);
+                this.transform.position += pos;
+            }
+            else if (this.dir == Direction.DOWN)
+            {
+                Vector3 pos = new Vector3(0, this.speed * Time.deltaTime, 0);
+                this.transform.position -= pos;
+            }
+            else if (this.dir == Direction.LEFT)
+            {
+                Vector3 pos = new Vector3(this.speed * Time.deltaTime, 0, 0);
+                this.transform.position -= pos;
+            }
+            else if (this.dir == Direction.RIGHT)
+            {
+                Vector3 pos = new Vector3(this.speed * Time.deltaTime, 0, 0);
+                this.transform.position += pos;
+            }
+
+            if (IsArrived() == true)
+            {
+                ChangeDirection();
+                this.mov = false;
+            }
+        }
+    }
+
+    public virtual void Animation(Tile des, Behavior beh)
+    {
+        if (beh == Behavior.MOVING)
+        {
+            this.loc = Destination(des.transform.position);
+            belongtile = des;
+            this.mov = true;
+        }
+
+        else if (beh == Behavior.REACT)
+        {
+
+        }
+
+        else if (beh == Behavior.SLEEP)
+        {
+
+        }
+    }
+
     protected Direction ChangeDir()
     {
         if (dir == Direction.UP)
@@ -65,12 +183,12 @@ public class Animals : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        loc = this.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

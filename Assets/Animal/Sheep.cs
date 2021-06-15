@@ -5,16 +5,12 @@ using UnityEngine;
 public class Sheep : Animals
 {
     // 상속할 함수 정의
-    override public int Move() //개별 이동 방식 정의
+    Animator animator;
+    string animationsDir = "AnimationDirection";
+    string animationsMov = "AnimationMove";
+    override public void Animation(Tile des, Behavior beh)
     {
-        //int result = CheckingMove(dir)     //해당 방향으로 이동이 얼마나 가능한지 값 리턴
-        //Moving()      //animation
-
-        return -1;
-    }
-
-    protected override void Animation()
-    {
+        base.Animation(des, beh);
         //동물 이동 시 애니메이션으로 진행
 
     }
@@ -22,15 +18,36 @@ public class Sheep : Animals
     // Start is called before the first frame update
     void Start()
     {
-        type = AnimalType.SHEEP;
-        //type = 0;
-        //dir = 0;
-        //loc = 0;
+        this.speed = 1;
+        this.type = AnimalType.SHEEP;
+        this.mov = false;
+        animator = GetComponent<Animator>();
     }
 
+    void UpdateState()
+    {
+        if (this.dir == Direction.UP)
+            animator.SetInteger(animationsDir, (int)Direction.UP);
+        else if (this.dir == Direction.DOWN)
+            animator.SetInteger(animationsDir, (int)Direction.DOWN);
+        else if (this.dir == Direction.LEFT)
+            animator.SetInteger(animationsDir, (int)Direction.LEFT);
+        else if (this.dir == Direction.RIGHT)
+            animator.SetInteger(animationsDir, (int)Direction.RIGHT);
+
+        if (this.mov == true)
+        {
+            animator.SetBool(animationsMov, true);
+        }
+        else
+        {
+            animator.SetBool(animationsMov, false);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
-
+        base.Moving();
+        UpdateState();
     }
 }

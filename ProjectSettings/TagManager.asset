@@ -42,3 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackGround
+    uniqueID: 131793569
+    locked: 0
+  - name: Tile
+    uniqueID: 2347567447
+    locked: 0
+  - name: Animal
+    uniqueID: 1495682153
+    locked: 0
