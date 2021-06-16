@@ -6,7 +6,8 @@ public enum AnimalType
 {
     SHEEP = 10,
     COW,
-    CHICKEN
+    CHICKEN,
+    Dog
 }
 
 public enum Direction

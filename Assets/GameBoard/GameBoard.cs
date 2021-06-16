@@ -2,7 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+public enum StageName
+{
+    Stage1,
+    Stage2,
+    Stage3,
+    Stage4,
+    Stage5,
+    Stage6,
+    Stage7,
+    Stage8,
+    Stage9
+}
 
 
 public class GameBoard : MonoBehaviour
@@ -17,18 +28,6 @@ public class GameBoard : MonoBehaviour
     {
 
     }
-
-    public int CheckingMove(AnimalType type, Direction dir, Vector2Int loc)
-    {
-
-
-        return 1;
-    }
-
-    //필요 함수 정의
-
-
-
 
 
     // Start is called before the first frame update
