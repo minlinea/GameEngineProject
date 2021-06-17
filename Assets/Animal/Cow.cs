@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Cow : Animals
 {
-    // »ó¼ÓÇÒ ÇÔ¼ö Á¤ÀÇ
+    private AudioSource audioSoure;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    // »ó¼ÓÇÒ ÇÔ¼ö Á¤ÀÇ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
     Animator animator;
     string animationsDir = "AnimationDirection";
     string animationsMov = "AnimationMove";
     override public void Animation(Tile des, Behavior beh)
     {
         base.Animation(des, beh);
-        //µ¿¹° ÀÌµ¿ ½Ã ¾Ö´Ï¸ÞÀÌ¼ÇÀ¸·Î ÁøÇà
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     }
 
@@ -23,7 +24,9 @@ public class Cow : Animals
         this.speed = 0;
         this.type = AnimalType.COW;
         this.mov = false;
+        this.sound = false;
         animator = GetComponent<Animator>();
+        audioSoure = GetComponent<AudioSource>();
     }
 
     void UpdateState()
@@ -44,6 +47,12 @@ public class Cow : Animals
         else
         {
             animator.SetBool(animationsMov, false);
+        }
+        
+        if (this.sound == true)
+        {
+            audioSoure.Play();
+            this.sound = false;
         }
     }
     // Update is called once per frame

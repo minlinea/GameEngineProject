@@ -27,15 +27,17 @@ public enum Behavior
 
 public class Animals : MonoBehaviour
 {
-    public AnimalType type;   //µ¿¹° Å¸ÀÔ (¾ç, ¼Ò, ´ß)
-    public Direction dir;    //¹Ù¶óº¸´Â ¹æÇâ(À§, ÁÂ, ¿ì, ¾Æ·¡)
+    public AnimalType type;   //ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ (ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½)
+    public Direction dir;    //ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½, ï¿½Æ·ï¿½)
     public bool mov;
+    public bool sound;
+    public AudioSource audioSoure;
     public int speed;
     protected Vector3 loc;
     public Tile belongtile;
 
-    // »ó¼ÓÇÒ ÇÔ¼ö Á¤ÀÇ
-    private void OnMouseDown()      //ÇØ´ç Ä­À» Å¬¸¯ÇßÀ» ¶§ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private void OnMouseDown()      //ï¿½Ø´ï¿½ Ä­ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 
     {
         belongtile.DogReact();
     }
@@ -155,6 +157,7 @@ public class Animals : MonoBehaviour
             this.loc = Destination(des.transform.position);
             belongtile = des;
             this.mov = true;
+            this.sound = true;
         }
 
         else if (beh == Behavior.REACT)
@@ -170,12 +173,13 @@ public class Animals : MonoBehaviour
 
 
 
-    //»ó¼ÓÇÒ ÇÔ¼ö Á¤ÀÇ;
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½;
 
     // Start is called before the first frame update
     void Start()
     {
         loc = this.transform.position;
+        this.sound = true;
     }
 
     // Update is called once per frame

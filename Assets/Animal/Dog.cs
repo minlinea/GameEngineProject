@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Dog : Animals
 {
-
-
-    // »ó¼ÓÇÒ ÇÔ¼ö Á¤ÀÇ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
     Animator animator;
     string animationsDir = "AnimationDirect";
     string animationsMov = "AnimationMove";
@@ -22,7 +20,7 @@ public class Dog : Animals
     override public void Animation(Tile des, Behavior beh)
     {
         //base.Animation(des, beh);
-        //µ¿¹° ÀÌµ¿ ½Ã ¾Ö´Ï¸ÞÀÌ¼ÇÀ¸·Î ÁøÇà
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     }
 
@@ -34,6 +32,7 @@ public class Dog : Animals
         this.type = AnimalType.Dog;
         this.mov = false;
         this.animator = GetComponent<Animator>();
+        audioSoure = GetComponent<AudioSource>();
         this.dir = Direction.LEFT;
         this.animator.SetInteger(animationsDir, (int)Direction.LEFT);
     }
@@ -122,6 +121,15 @@ public class Dog : Animals
                 t.checking = true;
             }
 
+            if (this.sound == true)
+            {
+                audioSoure.Play();
+                this.sound = false;
+            }
+        }
+        else
+        {
+            this.sound = true;
         }
     }
 
