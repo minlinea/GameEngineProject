@@ -12,6 +12,15 @@ public class Tile : GameBoard
     {
         if (true == active)
         {
+            AnimalMoving();      //애니메이션 진행
+        }
+        InputLock = false;
+    }
+
+    public void DogReact()
+    {
+        if (true == active)
+        {
             //base.OnMouseDown();
             if (false == InputLock)
             {
@@ -19,20 +28,15 @@ public class Tile : GameBoard
 
                 if (CheckRemaining() == true)        //나눌 수 있는 경우
                 {
-                    AnimalMoving();      //애니메이션 진행
-                }
-                else
-                {
-                    AnimalReact();
+                    player.setDestination(this);
                 }
             }
         }
-        InputLock = false;
     }
 
     private void OnMouseDown()      //해당 칸을 클릭했을 때 
     {
-        React();
+        DogReact();
     }
 
     private bool CheckRemaining()       //해당 타일의 주변 active 타일과 동물의 수 나머지 계산

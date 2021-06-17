@@ -8,11 +8,19 @@ public class Dog : Animals
 
     // 상속할 함수 정의
     Animator animator;
-    string animationsDir = "AnimationDirection";
+    string animationsDir = "AnimationDirect";
     string animationsMov = "AnimationMove";
+    string animationsBar = "AnimationBark";
+    private Vector3 destination;
+
+    public bool bark = false;
+    bool react = false;
+    bool state = false;
+    float timer = 0.0f;
+
     override public void Animation(Tile des, Behavior beh)
     {
-        base.Animation(des, beh);
+        //base.Animation(des, beh);
         //동물 이동 시 애니메이션으로 진행
 
     }
@@ -24,32 +32,149 @@ public class Dog : Animals
         this.type = AnimalType.Dog;
         this.mov = false;
         animator = GetComponent<Animator>();
+        this.dir = Direction.LEFT;
+        animator.SetInteger(animationsDir, (int)Direction.LEFT);
     }
 
-    void UpdateState()
-    {
-        if (this.dir == Direction.UP)
-            animator.SetInteger(animationsDir, (int)Direction.UP);
-        else if (this.dir == Direction.DOWN)
-            animator.SetInteger(animationsDir, (int)Direction.DOWN);
-        else if (this.dir == Direction.LEFT)
-            animator.SetInteger(animationsDir, (int)Direction.LEFT);
-        else if (this.dir == Direction.RIGHT)
-            animator.SetInteger(animationsDir, (int)Direction.RIGHT);
-
-        if (this.mov == true)
-        {
-            animator.SetBool(animationsMov, true);
-        }
-        else
-        {
-            animator.SetBool(animationsMov, false);
-        }
-    }
     // Update is called once per frame
+
+    public void setDestination(Tile des)
+    {
+        loc = des.transform.position;
+        belongtile = des;
+
+
+        this.mov = true;
+        animator.SetBool(animationsMov, true);
+     }
+
+    public bool isDestination()
+    {
+        Vector3 a = new Vector3(loc.x, loc.y,0);
+        Vector3 b = new Vector3(this.transform.position.x, this.transform.position.y,0);
+        Vector3 len = a - b;
+        float flen = len.sqrMagnitude;
+
+        if (flen < 0.1 * 0.1)
+            return true;
+        else
+            return false;
+
+    }
+    public void DogMoving()
+    {
+        if (true == this.mov)
+        {
+            Vector3 pos = new Vector3(this.speed * Time.deltaTime, this.speed * Time.deltaTime, 0);
+            int xdir = 0;
+            int ydir = 0;
+            float y = loc.y - this.transform.position.y;
+            float x = loc.x - this.transform.position.x;
+
+            if ( y > 0)
+            {
+                this.dir = Direction.UP;
+                ydir = 1;
+            }
+            else
+            {
+                this.dir = Direction.DOWN;
+                ydir = -1;
+            }
+            if(x > 0)
+            {
+                this.dir = Direction.RIGHT;
+                xdir = 1;
+            }
+            else
+            {
+                this.dir = Direction.LEFT;
+                xdir = -1;
+            }
+
+            pos.x *= xdir;
+            pos.y *= ydir;
+
+            this.transform.position += pos;
+
+            if (state == false)
+            {
+                state = true;
+                Debug.Log("test");
+                //DogStateChange();
+
+            }
+
+            if (true == isDestination())
+            {
+                this.mov = false;
+                animator.SetBool(animationsMov, false);
+                state = false;
+                this.bark = true;
+            }
+
+        }
+    }
+
+    void DogBark()
+    {
+        if(this.bark == true)
+        {
+            animator.SetBool(animationsBar, true);
+            timer += Time.deltaTime;
+
+            if (react == false)
+            {
+                belongtile.React();
+                react = true;
+            }
+           
+            if (timer > 1.0f)
+            {
+                react = false;
+                timer = 0;
+                this.bark = false;
+                animator.SetBool(animationsBar, false);
+            }
+        }
+    }
+    void DogStateChange()
+    {
+        if (true == this.mov)
+        {
+            Debug.Log("test2");
+            float y = loc.y - this.transform.position.y;
+            float x = loc.x - this.transform.position.x;
+
+            if (Mathf.Abs(y) > Mathf.Abs(x))
+            {
+                if (y > 0)
+                {
+                    animator.SetInteger(animationsDir, (int)Direction.UP);
+                }
+                else
+                {
+                    animator.SetInteger(animationsDir, (int)Direction.DOWN);
+                }
+            }
+            else
+            {
+                if (x > 0)
+                {
+                    animator.SetInteger(animationsDir, (int)Direction.RIGHT);
+                    
+                }
+                else
+                {
+                    animator.SetInteger(animationsDir, (int)Direction.LEFT);
+                }
+            }
+        }
+    }
     void Update()
     {
-        base.Moving();
-        UpdateState();
+        
+        DogMoving();
+        DogBark();
     }
 }

@@ -37,7 +37,7 @@ public class Animals : MonoBehaviour
     // 상속할 함수 정의
     private void OnMouseDown()      //해당 칸을 클릭했을 때 
     {
-        belongtile.React();
+        belongtile.DogReact();
     }
 
     private void ChangeDirection()

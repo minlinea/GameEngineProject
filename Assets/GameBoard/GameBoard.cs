@@ -23,17 +23,13 @@ public class GameBoard : MonoBehaviour
     protected static bool InputLock = false;
     public bool active = true;
     public string TileName;
-
-    public void StageLoad()
-    {
-
-    }
+    public Dog player;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        player = GetComponent<Dog>();
     }
 
     // Update is called once per frame
