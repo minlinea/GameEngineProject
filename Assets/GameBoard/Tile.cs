@@ -14,7 +14,6 @@ public class Tile : GameBoard
         {
             AnimalMoving();      //애니메이션 진행
         }
-        InputLock = false;
     }
 
     public void DogReact()
@@ -22,15 +21,12 @@ public class Tile : GameBoard
         if (true == active)
         {
             //base.OnMouseDown();
-            if (false == InputLock)
-            {
-                InputLock = true;
 
-                if (CheckRemaining() == true)        //나눌 수 있는 경우
-                {
-                    player.setDestination(this);
-                }
+            if (CheckRemaining() == true)        //나눌 수 있는 경우
+            {
+                player.setDestination(this);
             }
+
         }
     }
 
@@ -38,8 +34,7 @@ public class Tile : GameBoard
     {
         if (true == active)
         {
-            if (false == InputLock)
-                DogReact();
+             DogReact();
         }
     }
 
@@ -53,6 +48,9 @@ public class Tile : GameBoard
                 cnt += 1;
             }
         }
+        if (Animal.Count == 0)
+            return false;
+
         if (Animal.Count % cnt == 0)       // 나눌 수 있는 경우
         {   
             return true;

@@ -16,26 +16,34 @@ public class AnswerCheck : MonoBehaviour
 
     public void IsAnswer()
     {
-        bool e = true;
+        bool isanswer = true;
         if(timer > 1.5f)
         {
             for (int i = 0; i < Animal.Count; ++i)
             {
                 if (Animal[i].belongtile != AnswerTile[i])
                 {
-                   
-                    Debug.Log("FAIL");
-                    e = false;
+                    isanswer = false;
                     break;
                 }
             }
-            if (e == true)
-                Debug.Log("CLEAR");
+            if (isanswer == true)
+            {
+                clear();
+            }
 
             timer = 0.0f;
             checking = false;
         }
         
+    }
+
+    void clear()
+    {
+        Dog playerdog = GameObject.FindGameObjectWithTag("Dog").GetComponent<Dog>();
+        playerdog.InputLock = true;
+
+        Debug.Log("CLEAR");
     }
 
     // Update is called once per frame

@@ -17,6 +17,7 @@ public class Dog : Animals
     bool react = false;
     bool state = false;
     float timer = 0.0f;
+    public bool InputLock = false;
 
     override public void Animation(Tile des, Behavior beh)
     {
@@ -28,25 +29,31 @@ public class Dog : Animals
     // Start is called before the first frame update
     void Start()
     {
+        this.InputLock = false;
         this.speed = 2;
         this.type = AnimalType.Dog;
         this.mov = false;
-        animator = GetComponent<Animator>();
+        this.animator = GetComponent<Animator>();
         this.dir = Direction.LEFT;
-        animator.SetInteger(animationsDir, (int)Direction.LEFT);
+        this.animator.SetInteger(animationsDir, (int)Direction.LEFT);
     }
 
     // Update is called once per frame
 
     public void setDestination(Tile des)
     {
-        loc = des.transform.position;
-        belongtile = des;
+        if(InputLock == false)
+        {
+            InputLock = true;
+            loc = des.transform.position;
+            belongtile = des;
 
 
-        this.mov = true;
-        animator.SetBool(animationsMov, true);
-     }
+            this.mov = true;
+            animator.SetBool(animationsMov, true);
+
+        }
+    }
 
     public bool isDestination()
     {
@@ -100,7 +107,7 @@ public class Dog : Animals
             if (state == false)
             {
                 state = true;
-                //DogStateChange();
+                DogStateChange();
 
             }
 
@@ -137,6 +144,7 @@ public class Dog : Animals
                 timer = 0;
                 this.bark = false;
                 animator.SetBool(animationsBar, false);
+                InputLock = false;
             }
         }
     }
@@ -144,7 +152,6 @@ public class Dog : Animals
     {
         if (true == this.mov)
         {
-            Debug.Log("test2");
             float y = loc.y - this.transform.position.y;
             float x = loc.x - this.transform.position.x;
 

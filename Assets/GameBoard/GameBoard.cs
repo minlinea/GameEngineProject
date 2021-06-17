@@ -20,7 +20,6 @@ public class GameBoard : MonoBehaviour
 {
     //필요 함수 정의
 
-    protected static bool InputLock = false;
     public bool active = true;
     public string TileName;
     public Dog player;

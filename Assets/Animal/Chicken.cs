@@ -20,7 +20,7 @@ public class Chicken : Animals
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = 2;
+        this.speed = 3;
         this.type = AnimalType.CHICKEN;
         this.mov = false;
         animator = GetComponent<Animator>();
