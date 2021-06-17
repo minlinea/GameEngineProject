@@ -50,6 +50,9 @@ public class Animals : MonoBehaviour
             this.dir = Direction.RIGHT;
         else if (this.dir == Direction.RIGHT)
             this.dir = Direction.LEFT;
+
+
+
     }
 
     private Vector3 Destination(Vector3 vtile)
@@ -163,18 +166,6 @@ public class Animals : MonoBehaviour
         {
 
         }
-    }
-
-    protected Direction ChangeDir()
-    {
-        if (dir == Direction.UP)
-            return Direction.DOWN;
-        else if (dir == Direction.DOWN)
-            return Direction.UP;
-        else if (dir == Direction.LEFT)
-            return Direction.RIGHT;
-        else
-            return Direction.LEFT;
     }
 
 

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameBoard
+  - AnswerCheck
   layers:
   - Default
   - TransparentFX
@@ -50,4 +51,7 @@ TagManager:
     locked: 0
   - name: Animal
     uniqueID: 1495682153
+    locked: 0
+  - name: Hint
+    uniqueID: 664468835
     locked: 0

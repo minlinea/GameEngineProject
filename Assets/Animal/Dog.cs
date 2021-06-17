@@ -100,7 +100,6 @@ public class Dog : Animals
             if (state == false)
             {
                 state = true;
-                Debug.Log("test");
                 //DogStateChange();
 
             }
@@ -111,6 +110,9 @@ public class Dog : Animals
                 animator.SetBool(animationsMov, false);
                 state = false;
                 this.bark = true;
+
+                AnswerCheck t = GameObject.FindGameObjectWithTag("AnswerCheck").GetComponent<AnswerCheck>();
+                t.checking = true;
             }
 
         }

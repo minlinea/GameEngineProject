@@ -36,7 +36,11 @@ public class Tile : GameBoard
 
     private void OnMouseDown()      //해당 칸을 클릭했을 때 
     {
-        DogReact();
+        if (true == active)
+        {
+            if (false == InputLock)
+                DogReact();
+        }
     }
 
     private bool CheckRemaining()       //해당 타일의 주변 active 타일과 동물의 수 나머지 계산
