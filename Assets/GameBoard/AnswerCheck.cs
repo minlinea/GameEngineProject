@@ -8,10 +8,11 @@ public class AnswerCheck : MonoBehaviour
     public List<Tile> AnswerTile;
     float timer = 0.0f;
     public bool checking = false;
+    public GameObject clearimage;
     // Start is called before the first frame update
     void Start()
     {
-        
+        clearimage.SetActive(false);
     }
 
     public void IsAnswer()
@@ -43,7 +44,7 @@ public class AnswerCheck : MonoBehaviour
         Dog playerdog = GameObject.FindGameObjectWithTag("Dog").GetComponent<Dog>();
         playerdog.InputLock = true;
 
-        Debug.Log("CLEAR");
+        clearimage.SetActive(true);
     }
 
     // Update is called once per frame
